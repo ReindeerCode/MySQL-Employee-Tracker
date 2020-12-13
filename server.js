@@ -1,5 +1,6 @@
 // Dependencies
 const express = require("express");
+const cTable = require("console.table");
 const fs = require("fs");
 const { request } = require("http");
 const path = require("path");
@@ -17,11 +18,11 @@ var connection = mysql.createConnection({ multipleStatements: true });
 var connection = mysql.createConnection({
   host: "localhost",
   // Your port; if not 3306
-  port: 3306,
+  port: 8080,
   // Your username
   user: "root",
   // Your password
-  password: "",
+  password: "rootroot",
   database: "top_songsDB",
 });
 // connection.connect(function(err) {
