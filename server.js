@@ -1,29 +1,29 @@
 // Dependencies
 const express = require("express");
+const path = require("path");
 const cTable = require("console.table");
 const fs = require("fs");
+const mysql = require("mysql2");
 const { request } = require("http");
-const path = require("path");
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3306;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-var mysql = require("mysql2");
 var connection = mysql.createConnection({ multipleStatements: true });
 // require('dotenv').config()
 // console.log(process.env.DB_PASSWORD)
 var connection = mysql.createConnection({
   host: "localhost",
   // Your port; if not 3306
-  port: 8080,
+  port: 3306,
   // Your username
   user: "root",
   // Your password
   password: "rootroot",
-  database: "top_songsDB",
+  database: "employee_trackerdb",
 });
 // connection.connect(function(err) {
 //   if (err) throw err;
