@@ -36,6 +36,7 @@ const connection = mysql2.createConnection({
 //  //call next function here
 // }
 
+//will need to get information from database first
 // function view () {
 //   inquirer.prompt(questions.view).then((answers) => {
 //     const view = new View(
@@ -48,6 +49,7 @@ const connection = mysql2.createConnection({
 //  //call next function here
 // }
 
+//will need to get information from database first
 // function update () {
 //   inquirer.prompt(questions.update).then((answers) => {
 //     const update = new Update(
@@ -61,16 +63,17 @@ const connection = mysql2.createConnection({
 connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
+  afterConnection();
   connection.end();
 });
 
 function afterConnection() {
-  connection.query("SELECT * FROM department", function (err, res) {
+  connection.query("SELECT * FROM employee", function (err, res) {
     if (err) throw err;
     console.table(res);
-    connection.end();
   });
 }
+
 // listen
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
