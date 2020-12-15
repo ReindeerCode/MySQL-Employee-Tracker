@@ -5,102 +5,59 @@ const entryValidate = (answer) => {
   return true;
 };
 
-const emailValidate = function (email) {
-  valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
-
-  if (valid) {
-    return true;
-  } else {
-    return "Please enter a valid email";
-  }
-};
-
-const managerQuestions = [
+const add = [
   {
     type: "input",
-    name: "name",
-    message: "What is the Manager's name?",
+    name: "department",
+    message: "Add new department?",
     validate: entryValidate,
   },
   {
     type: "input",
-    name: "id",
-    message: "What is the Manager's ID?",
+    name: "role",
+    message: "Add new role?",
     validate: entryValidate,
   },
   {
     type: "input",
-    name: "email",
-    message: "What is the Manager's email address?",
-    validate: emailValidate,
-  },
-  {
-    type: "input",
-    name: "officeNumber",
-    message: "What is the Manager's office number?",
-    validate: function (answer) {
-      if (isNaN(answer)) {
-        return "Please enter a number";
-      }
-      return true;
-    },
-  },
-];
-const engineerQuestions = [
-  {
-    type: "input",
-    name: "name",
-    message: "What is the engineer's name?",
-    validate: entryValidate,
-  },
-  {
-    type: "input",
-    name: "id",
-    message: "What is the engineer's ID?",
-    validate: entryValidate,
-  },
-  {
-    type: "input",
-    name: "email",
-    message: "What is the engineer's email address?",
-    validate: emailValidate,
-  },
-  {
-    type: "input",
-    name: "github",
-    message: "What is the engineer's GitHub name?",
+    name: "employee",
+    message: "Add new employee?",
     validate: entryValidate,
   },
 ];
-const internQuestions = [
+
+const view = [
   {
     type: "input",
-    name: "name",
-    message: "What is the intern's name?",
+    name: "department",
+    message: "Add a department?",
     validate: entryValidate,
   },
   {
     type: "input",
-    name: "id",
-    message: "What is the intern's ID?",
+    name: "role",
+    message: "View a role?",
     validate: entryValidate,
   },
   {
     type: "input",
-    name: "email",
-    message: "What is the intern's email address?",
-    validate: emailValidate,
+    name: "employee",
+    message: "View an employee?",
+    validate: entryValidate,
   },
+];
+
+const update = [
   {
     type: "input",
-    name: "school",
-    message: "Where did the intern go to school?",
+    name: "employee",
+    message: "Would you like to update an employees role?",
     validate: entryValidate,
   },
 ];
 
 module.exports = {
-  internQuestions,
-  managerQuestions,
-  engineerQuestions,
+  add,
+  view,
+  update,
 };

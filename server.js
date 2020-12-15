@@ -1,53 +1,76 @@
 // Dependencies
 const express = require("express");
+const inquirer = require("inquirer");
 const path = require("path");
 const cTable = require("console.table");
 const fs = require("fs");
-const mysql = require("mysql2");
+const mysql2 = require("mysql2");
+const questions = require("./questions");
 const { request } = require("http");
 const app = express();
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 8080;
 // Sets up the Express app to handle data parsing
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-var connection = mysql.createConnection({ multipleStatements: true });
-// require('dotenv').config()
-// console.log(process.env.DB_PASSWORD)
-var connection = mysql.createConnection({
+const tableUpdates = [];
+
+const connection = mysql2.createConnection({
   host: "localhost",
-  // Your port; if not 3306
   port: 3306,
-  // Your username
   user: "root",
-  // Your password
   password: "rootroot",
   database: "employee_trackerdb",
 });
-// connection.connect(function(err) {
-//   if (err) throw err;
-//   console.log("connected as id " + connection.threadId);
-//     let search = process.argv[2];
-//     connection.query(`select * from top5000 where artist="${search}"`, function(err, res){
-//         if (err) throw err;
-//         console.table(res);
-//         connection.end();
-//     });
-// });
-// connection.connect(function(err) {
-//     if (err) throw err;
-//     console.log("connected as id " + connection.threadId);
-//   //   afterConnection();
-//       let startYear = process.argv[2];
-//       let endYear = process.argv[3];
-//       connection.query(`select * from top5000 where year between "${startYear}" and "${endYear}"`, function(err, res){
-//           if (err) throw err;
-//           console.table(res);
-//           connection.end();
-//       });
-//   });
 
+// function add () {
+//   inquirer.prompt(questions.add).then((answers) => {
+//     const add = new Add(
+//       answers.department,
+//       answers.role,
+//       answers.employee,
+//     )
+//   });
+//  tableUpdates.push(add);
+//  //call next function here
+// }
+
+// function view () {
+//   inquirer.prompt(questions.view).then((answers) => {
+//     const view = new View(
+//       answers.department,
+//       answers.role,
+//       answers.employee,
+//     )
+//   });
+//  tableUpdates.push(view);
+//  //call next function here
+// }
+
+// function update () {
+//   inquirer.prompt(questions.update).then((answers) => {
+//     const update = new Update(
+//       answers.employee,
+//     )
+//   });
+//  tableUpdates.push(update);
+//  //call next function here
+// }
+
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId);
+  connection.end();
+});
+
+function afterConnection() {
+  connection.query("SELECT * FROM department", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    connection.end();
+  });
+}
 // listen
 app.listen(PORT, function () {
   console.log("App listening on PORT " + PORT);
