@@ -14,7 +14,7 @@ const starter = [
       "Add department, role, or employee.",
       "View departments, roles, or employees.",
       "Update an employee's role.",
-      "I'm done.",
+      "I'm done, show me the master table.",
     ],
   },
 ];
@@ -28,7 +28,7 @@ const add = [
       "Add new department.",
       "Add new role.",
       "Add new employee.",
-      "I'm done.",
+      "I'm done, show me the master table.",
     ],
   },
 ];
@@ -42,7 +42,7 @@ const view = [
       "View departments.",
       "View roles.",
       "View employees.",
-      "I'm done.",
+      "I'm done, show me the master table.",
     ],
   },
 ];
