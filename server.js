@@ -68,10 +68,15 @@ connection.connect((err) => {
 });
 
 function afterConnection() {
-  connection.query("SELECT * FROM employee", function (err, res) {
-    if (err) throw err;
-    console.table(res);
-  });
+  connection.query(
+    `select * from employee
+  inner join role on employee.role_id = role.id
+  inner join department on role.department_id = department.id`,
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+    }
+  );
 }
 
 // listen
