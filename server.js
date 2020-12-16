@@ -2,7 +2,7 @@
 const express = require("express");
 const inquirer = require("inquirer");
 const path = require("path");
-const cTable = require("console.table");
+// const cTable = require("console.table");
 const fs = require("fs");
 const mysql2 = require("mysql2");
 const questions = require("./questions");
