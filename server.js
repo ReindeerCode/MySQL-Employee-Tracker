@@ -2,7 +2,7 @@
 const express = require("express");
 const inquirer = require("inquirer");
 const path = require("path");
-// const cTable = require("console.table");
+const cTable = require("console.table");
 const fs = require("fs");
 const mysql2 = require("mysql2");
 const questions = require("./questions");
@@ -23,6 +23,24 @@ const connection = mysql2.createConnection({
   password: "rootroot",
   database: "employee_trackerdb",
 });
+
+// function starter() {
+//   inquirer.prompt(questions.starter).then((answers) => {
+//     if (answers.starterQuestion === "Add department, role, or employee.") {
+//       add();
+//     } else if (
+//       answers.starterQuestion === "View departments, roles, or employees."
+//     ) {
+//       view();
+//     } else if (answers.starterQuestion === "Update an employee's role.") {
+//       update();
+//     } else {
+//       afterConnection();
+//     }
+//   });
+// }
+
+// starter();
 
 // function add () {
 //   inquirer.prompt(questions.add).then((answers) => {
