@@ -1,6 +1,12 @@
 const entryValidate = (answer) => {
   if (answer === "") {
-    return "Type First and Last name of employee.";
+    return "Validate error message";
+  }
+  return true;
+};
+const numberValidate = (answer) => {
+  if (answer === isNaN) {
+    return "Must be a number.";
   }
   return true;
 };
@@ -41,6 +47,53 @@ const newDepartName = [
     validate: entryValidate,
   },
 ];
+const newRoleInfo = [
+  {
+    type: "input",
+    name: "newRoleTitle",
+    message: "What is the new role's title?",
+    validate: entryValidate,
+  },
+  {
+    type: "input",
+    name: "newRoleSalary",
+    message: "What is the new role's salary?",
+    validate: numberValidate,
+  },
+  {
+    type: "input",
+    name: "newRoleDepartment_ID",
+    message: "What is the new role's Department ID number?",
+    validate: numberValidate,
+  },
+];
+
+const newEmployeeInfo = [
+  {
+    type: "input",
+    name: "newFirstName",
+    message: "What is the employee's first name?",
+    validate: entryValidate,
+  },
+  {
+    type: "input",
+    name: "newLastName",
+    message: "What is the employee's last name?",
+    validate: entryValidate,
+  },
+  {
+    type: "input",
+    name: "newEmployeeID",
+    message: "What is the new employee's id number?",
+    validate: numberValidate,
+  },
+  {
+    type: "input",
+    name: "newEmployeeManager_ID",
+    message:
+      "What is the new employee's manager ID number? (Can be left blank.)",
+  },
+];
 
 const view = [
   {
@@ -70,5 +123,7 @@ module.exports = {
   view,
   update,
   starter,
+  newRoleInfo,
   newDepartName,
+  newEmployeeInfo,
 };

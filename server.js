@@ -14,8 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
 
-const tableUpdates = [];
-
 const connection = mysql2.createConnection({
   host: "localhost",
   port: 3306,
@@ -23,8 +21,6 @@ const connection = mysql2.createConnection({
   password: "rootroot",
   database: "employee_trackerdb",
 });
-
-const tableChanges = [];
 
 //inquirer questions functions___________________________
 //initial questions function___________________________
@@ -56,14 +52,54 @@ function add() {
           console.log("Error entering new department name");
         }
       });
+    } else if (answers.addSomething === "Add new role.") {
+      inquirer.prompt(questions.newRoleInfo).then((answers) => {
+        if (answers.newRoleInfo !== "") {
+          addNewRoleInfo(answers);
+        } else {
+          console.log("Error entering new role info");
+        }
+      });
+    } else if (answers.addSomething === "Add new employee.") {
+      inquirer.prompt(questions.newEmployeeInfo).then((answers) => {
+        if (answers.newEmployeeInfo !== "") {
+          addNewEmployee(answers);
+        } else {
+          console.log("Error entering new employee info");
+        }
+      });
     }
   });
 }
 
 function addNewDepartName(answers) {
   connection.query(
-    `insert into department(name)
-         value ("${answers}");`,
+    `USE employee_trackerDB;
+    insert into department(name)
+    value ("${newDepartName}");`,
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+    }
+  );
+}
+function addNewRoleInfo(answers) {
+  connection.query(
+    `USE employee_trackerDB;
+    insert into role(title, salary, department_id)
+    value ("${newRoleTitle}","${newRoleSalary}", "${newRoleDepartment_ID}");`,
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+    }
+  );
+}
+
+function addNewEmployee(answers) {
+  connection.query(
+    `USE employee_trackerDB;
+    insert into employee(first_name, last_name, manager_id)
+    value ("${newFirstName}","${newLastName}", "${newEmployeeID}", "${newEmployeeManager_ID}");`,
     function (err, res) {
       if (err) throw err;
       console.table(res);
@@ -121,9 +157,8 @@ function afterConnection() {
     }
   );
 }
-
 // // initialize starter function
-starter();
+// starter();
 // // end initialize starter function
 
 // listen
