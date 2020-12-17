@@ -24,55 +24,61 @@ const connection = mysql2.createConnection({
   database: "employee_trackerdb",
 });
 
-//questions functions
-//initial questions function
-// function starter() {
-//   inquirer.prompt(questions.starter).then((answers) => {
-//     if (answers.starterQuestion === "Add department, role, or employee.")
-//       add();
-//     } else if (
-//       answers.starterQuestion === "View departments, roles, or employees."
-//     ) {
-//       view();
-//     } else if (answers.starterQuestion === "Update an employee's role.") {
-//       update();
-//     } else {
-//       afterConnection();
-//     }
-//   });
-// }
-// starter();
-//end initial questions function
+const tableChanges = [];
 
-//user wants to add to tables function
+//inquirer questions functions___________________________
+//initial questions function___________________________
+function starter() {
+  inquirer.prompt(questions.starter).then((answers) => {
+    if (answers.starterQuestion === "Add department, role, or employee.") {
+      add();
+    } else if (
+      answers.starterQuestion === "View departments, roles, or employees."
+    ) {
+      view();
+    } else if (answers.starterQuestion === "Update an employee's role.") {
+      update();
+    } else {
+      afterConnection();
+    }
+    tableChanges.push(starter);
+  });
+}
+//end initial questions function___________________________
+
+//user wants to add to tables function___________________________
 // function add () {
-//     if (answers.addSomething === "Add new department.")
-//       create function to add to department table();
+//     if (answers.addSomething === "Add new department.") {
+//     //   create function to add to department table();
 //     } else if (
 //       answers.addSomething === "Add new role."
 //     ) {
-//       create function to add to role table();
+//       // create function to add to role table();
 //     } else if (answers.addSomething === "Add new employee.") {
-//       create function to add to employee table();
+//       // create function to add to employee table();
 //     } else {
 //       afterConnection();
 //     }
 //   });
-//end user wants to add to tables function
-
-//user wants to view table data function
-// function view () {
-//   inquirer.prompt(questions.view).then((answers) => {
-//     const view = new View(
-//       answers.department,
-//       answers.role,
-//       answers.employee,
-//     )
-//   });
-//  tableUpdates.push(view);
-//  //call next function here
 // }
-//end user wants to view table data function
+//end user wants to add to tables function___________________________
+
+//user wants to view table data function___________________________
+// function view () {
+//     if (answers.viewSomething === "View departments.") {
+//     //   console.table(`SELECT * FROM department`);
+//     } else if (
+//       answers.viewSomething === "View roles."
+//     ) {
+//       // console.table(`select * from role`);
+//     } else if (answers.viewSomething === "View employees.") {
+//       // console.table(`select * from employee`);
+//     } else {
+//       afterConnection();
+//     }
+//   });
+// }
+//end user wants to view table data function___________________________
 
 //user wants to update role table data function
 // function update () {
@@ -84,8 +90,8 @@ const connection = mysql2.createConnection({
 //  tableUpdates.push(update);
 //  //call next function here
 // }
-//end user wants to update role table data function
-//end questions functions
+//end user wants to update role table data function_______________________
+//end inquirer questions functions___________________________
 
 connection.connect((err) => {
   if (err) throw err;
@@ -105,6 +111,10 @@ function afterConnection() {
     }
   );
 }
+
+// // initialize starter function
+// starter();
+// // end initialize starter function
 
 // listen
 app.listen(PORT, function () {
