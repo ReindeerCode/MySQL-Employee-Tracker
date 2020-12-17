@@ -41,35 +41,35 @@ function starter() {
     } else {
       afterConnection();
     }
-    tableChanges.push(starter);
   });
 }
 //end initial questions function___________________________
 
 //user wants to add to tables function___________________________
-// function add () {
-// inquirer.prompt(questions.add).then((answers) => {
-//     if (answers.addSomething === "Add new department.") {
-//       connection.query(
-// `select * from department
-// insert (${answer})
-// value;`,
-//   function (err, res) {
-//     if (err) throw err;
-//     console.table(res);
-//   }
-// );
-//     } else if (
-//       answers.addSomething === "Add new role."
-//     ) {
-//       // create function to add to role table();
-//     } else if (answers.addSomething === "Add new employee.") {
-//       // create function to add to employee table();
-//     } else {
-//       afterConnection();
-//     }
-//   });
-// }
+function add() {
+  inquirer.prompt(questions.add).then((answers) => {
+    if (answers.addSomething === "Add new department.") {
+      inquirer.prompt(questions.newDepartName).then((answers) => {
+        if (answers.newDepartName !== "") {
+          addNewDepartName(answers);
+        } else {
+          console.log("Error entering new department name");
+        }
+      });
+    }
+  });
+}
+
+function addNewDepartName(answers) {
+  connection.query(
+    `insert into department(name)
+         value ("${answers}");`,
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+    }
+  );
+}
 //end user wants to add to tables function___________________________
 
 //user wants to view table data function___________________________
@@ -123,7 +123,7 @@ function afterConnection() {
 }
 
 // // initialize starter function
-// starter();
+starter();
 // // end initialize starter function
 
 // listen

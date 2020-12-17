@@ -33,6 +33,15 @@ const add = [
   },
 ];
 
+const newDepartName = [
+  {
+    type: "input",
+    name: "newDepartName",
+    message: "What is the new department's name to be?",
+    validate: entryValidate,
+  },
+];
+
 const view = [
   {
     type: "list",
@@ -61,4 +70,5 @@ module.exports = {
   view,
   update,
   starter,
+  newDepartName,
 };
