@@ -11,16 +11,20 @@ const numberValidate = (answer) => {
   return true;
 };
 
-const starter = [
+const starterQ = [
   {
     type: "list",
     name: "starterQuestion",
-    message: "Would you like to add, view, or update something?",
+    message: "What would you like to do?",
     choices: [
-      "Add department, role, or employee.",
-      "View departments, roles, or employees.",
+      "View departments.",
+      "View Roles.",
+      "View Employees.",
+      "Add department.",
+      "Add Role.",
+      "Add Employee.",
       "Update an employee's role.",
-      "I'm done, show me the master table.",
+      "I'm done.",
     ],
   },
 ];
@@ -122,7 +126,7 @@ module.exports = {
   add,
   view,
   update,
-  starter,
+  starterQ,
   newRoleInfo,
   newDepartName,
   newEmployeeInfo,

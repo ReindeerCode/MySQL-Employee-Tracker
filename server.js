@@ -6,7 +6,7 @@ const cTable = require("console.table");
 const fs = require("fs");
 const mysql2 = require("mysql2");
 const questions = require("./questions");
-const { request } = require("http");
+const { request, get } = require("http");
 const app = express();
 const PORT = process.env.PORT || 8080;
 // Sets up the Express app to handle data parsing
@@ -21,91 +21,114 @@ const connection = mysql2.createConnection({
   password: "rootroot",
   database: "employee_trackerdb",
 });
+connection.connect((err) => {
+  if (err) throw err;
+  console.log("connected as id " + connection.threadId);
+  starter();
+});
 
-//inquirer questions functions___________________________
-//initial questions function___________________________
 function starter() {
-  inquirer.prompt(questions.starter).then((answers) => {
-    if (answers.starterQuestion === "Add department, role, or employee.") {
-      add();
-    } else if (
-      answers.starterQuestion === "View departments, roles, or employees."
-    ) {
-      view();
-    } else if (answers.starterQuestion === "Update an employee's role.") {
-      update();
-    } else {
-      afterConnection();
-    }
-  });
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "starterQuestion",
+        message: "What would you like to do?",
+        choices: [
+          "View departments.",
+          "View Roles.",
+          "View Employees.",
+          "Add department.",
+          "Add Role.",
+          "Add Employee.",
+          "Update an employee's role.",
+          "I'm done.",
+        ],
+      },
+    ])
+    .then((answers) => {
+      if (answers.starterQuestion === "View departments.") {
+        getDepartment();
+      } else if (answers.starterQuestion === "View Roles.") {
+        getRoles();
+      } else if (answers.starterQuestion === "View Employees.") {
+        getEmployees();
+      } else {
+        connection.end();
+      }
+    });
 }
-//end initial questions function___________________________
 
-//user wants to add to tables function___________________________
-function add() {
-  inquirer.prompt(questions.add).then((answers) => {
-    if (answers.addSomething === "Add new department.") {
-      inquirer.prompt(questions.newDepartName).then((answers) => {
-        if (answers.newDepartName !== "") {
-          addNewDepartName(answers);
-        } else {
-          console.log("Error entering new department name");
-        }
-      });
-    } else if (answers.addSomething === "Add new role.") {
-      inquirer.prompt(questions.newRoleInfo).then((answers) => {
-        if (answers.newRoleInfo !== "") {
-          addNewRoleInfo(answers);
-        } else {
-          console.log("Error entering new role info");
-        }
-      });
-    } else if (answers.addSomething === "Add new employee.") {
-      inquirer.prompt(questions.newEmployeeInfo).then((answers) => {
-        if (answers.newEmployeeInfo !== "") {
-          addNewEmployee(answers);
-        } else {
-          console.log("Error entering new employee info");
-        }
-      });
-    }
+function getDepartment() {
+  const query = "SELECT name FROM department";
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    starter();
   });
 }
 
-function addNewDepartName(answers) {
-  connection.query(
-    `USE employee_trackerDB;
-    insert into department(name)
-    value ("${newDepartName}");`,
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-    }
-  );
-}
-function addNewRoleInfo(answers) {
-  connection.query(
-    `USE employee_trackerDB;
-    insert into role(title, salary, department_id)
-    value ("${newRoleTitle}","${newRoleSalary}", "${newRoleDepartment_ID}");`,
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-    }
-  );
+function getRoles() {
+  const query =
+    "select role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    starter();
+  });
 }
 
-function addNewEmployee(answers) {
-  connection.query(
-    `USE employee_trackerDB;
-    insert into employee(first_name, last_name, manager_id)
-    value ("${newFirstName}","${newLastName}", "${newEmployeeID}", "${newEmployeeManager_ID}");`,
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-    }
-  );
+function getEmployees() {
+  const query = "SELECT * FROM employee";
+  connection.query(query, (err, res) => {
+    let table = [];
+    res.forEach((employee) => {
+      table.push({
+        ID: `${employee.id}`,
+        NAME: `${employee.first_name} ${employee.last_name}`,
+        ROLE_ID: `${employee.role_id}`,
+        MANAGER_ID: `${employee.manager_id}`,
+      });
+    });
+    console.table(table);
+    starter();
+  });
 }
+
+// function addNewDepartName(answers) {
+//   connection.query(
+//     `USE employee_trackerDB;
+//     insert into department(name)
+//     value ("${answers.newDepartName}");`,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.table(res);
+//     }
+//   );
+// }
+// function addNewRoleInfo(answers) {
+//   connection.query(
+//     `USE employee_trackerDB;
+//     insert into role(title, salary, department_id)
+//     value ("${answers.newRoleTitle}","${answers.newRoleSalary}", "${answers.newRoleDepartment_ID}");`,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.table(res);
+//     }
+//   );
+// }
+
+// function addNewEmployee(answers) {
+//   connection.query(
+//     `USE employee_trackerDB;
+//     insert into employee(first_name, last_name, manager_id)
+//     value ("${answers.newFirstName}","${answers.newLastName}", "${answers.newEmployeeID}", "${answers.newEmployeeManager_ID}");`,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.table(res);
+//     }
+//   );
+// }
 //end user wants to add to tables function___________________________
 
 //user wants to view table data function___________________________
@@ -138,13 +161,6 @@ function addNewEmployee(answers) {
 // }
 //end user wants to update role table data function_______________________
 //end inquirer questions functions___________________________
-
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId);
-  afterConnection();
-  connection.end();
-});
 
 function afterConnection() {
   connection.query(
