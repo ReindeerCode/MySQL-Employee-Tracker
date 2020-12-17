@@ -48,6 +48,7 @@ function starter() {
 
 //user wants to add to tables function___________________________
 // function add () {
+// inquirer.prompt(questions.add).then((answers) => {
 //     if (answers.addSomething === "Add new department.") {
 //     //   create function to add to department table();
 //     } else if (
@@ -65,6 +66,7 @@ function starter() {
 
 //user wants to view table data function___________________________
 // function view () {
+// inquirer.prompt(questions.view).then((answers) => {
 //     if (answers.viewSomething === "View departments.") {
 //     //   console.table(`SELECT * FROM department`);
 //     } else if (
