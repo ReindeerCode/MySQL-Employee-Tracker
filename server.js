@@ -50,7 +50,15 @@ function starter() {
 // function add () {
 // inquirer.prompt(questions.add).then((answers) => {
 //     if (answers.addSomething === "Add new department.") {
-//     //   create function to add to department table();
+//       connection.query(
+// `select * from department
+// insert (${answer})
+// value;`,
+//   function (err, res) {
+//     if (err) throw err;
+//     console.table(res);
+//   }
+// );
 //     } else if (
 //       answers.addSomething === "Add new role."
 //     ) {
