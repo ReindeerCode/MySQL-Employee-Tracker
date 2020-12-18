@@ -35,6 +35,14 @@ function starter() {
       getRoles();
     } else if (answers.starterQuestion === "View Employees.") {
       getEmployees();
+    } else if (answers.starterQuestion === "Add Department.") {
+      addDepartment();
+    } else if (answers.starterQuestion === "Add Role.") {
+      addRole();
+    } else if (answers.starterQuestion === "Add Employee.") {
+      addEmployee();
+    } else if (answers.starterQuestion === "Update an employee's role.") {
+      updateRole();
     } else {
       connection.end();
     }
@@ -77,17 +85,17 @@ function getEmployees() {
   });
 }
 
-function afterConnection() {
-  connection.query(
-    `select * from employee
-  inner join role on employee.role_id = role.id
-  inner join department on role.department_id = department.id;`,
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-    }
-  );
-}
+// function afterConnection() {
+//   connection.query(
+//     `select * from employee
+//   inner join role on employee.role_id = role.id
+//   inner join department on role.department_id = department.id;`,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.table(res);
+//     }
+//   );
+// }
 
 // listen
 app.listen(PORT, function () {

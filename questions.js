@@ -20,7 +20,7 @@ const starterQ = [
       "View departments.",
       "View Roles.",
       "View Employees.",
-      "Add department.",
+      "Add Department.",
       "Add Role.",
       "Add Employee.",
       "Update an employee's role.",

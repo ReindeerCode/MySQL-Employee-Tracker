@@ -24,6 +24,8 @@ CREATE TABLE employee (
   manager_id INT
   );
 
+
+
 insert into employee (first_name,last_name, role_id)
 value ("John", "Doe", 1);
 
