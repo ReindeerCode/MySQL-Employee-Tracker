@@ -49,6 +49,38 @@ function starter() {
   });
 }
 
+function addDepartment() {
+  inquirer.prompt(questions.newDepartName).then((answers) => {
+    if (answers.newDepartName !== "") {
+      console.log(answers.body);
+      // function addDepartment(answer) {
+      //   connection.query(
+      //     "UPDATE department SET name = ? WHERE id = ?",
+      //     [product.stock_quantity + quantity, id],
+      //     function (err, res) {
+      //       // Let the user know the purchase was successful, re-run loadProducts
+      //       console.log(
+      //         "\nSuccessfully added " +
+      //           quantity +
+      //           " " +
+      //           product.product_name +
+      //           "'s!\n"
+      //       );
+      //       loadManagerMenu();
+      //     }
+      //   );
+      // }
+      // // Gets all departments, then gets the new product info, then inserts the new product into the db
+      // function addNewProduct() {
+      //   getDepartments(function (err, departments) {
+      //     getProductInfo(departments).then(insertNewProduct);
+      //   });
+      // }
+    } else {
+      console.log("something went wrong adding new department");
+    }
+  });
+}
 function getDepartment() {
   const query = "SELECT name FROM department";
   connection.query(query, (err, res) => {

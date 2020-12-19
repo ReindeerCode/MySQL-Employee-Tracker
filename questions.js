@@ -5,7 +5,7 @@ const entryValidate = (answer) => {
   return true;
 };
 const numberValidate = (answer) => {
-  if (answer === isNaN) {
+  if (isNaN(answer) === false) {
     return "Must be a number.";
   }
   return true;
@@ -47,7 +47,7 @@ const newDepartName = [
   {
     type: "input",
     name: "newDepartName",
-    message: "What is the new department's name to be?",
+    message: "What is the new department's name?",
     validate: entryValidate,
   },
 ];
