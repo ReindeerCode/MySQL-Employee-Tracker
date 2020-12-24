@@ -115,10 +115,16 @@ const view = [
 
 const update = [
   {
-    type: "input",
+    type: "list",
+    name: "updateEmployee",
+    message: "Which employee's role would you like to update?",
+    choices: "",
+  },
+  {
+    type: "list",
     name: "updateRole",
-    message: "Who's role would you like to update?",
-    validate: entryValidate,
+    message: "Which employee's role would you like to update?",
+    choices: "",
   },
 ];
 

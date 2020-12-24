@@ -7,7 +7,7 @@ const fs = require("fs");
 const mysql2 = require("mysql2");
 const questions = require("./questions");
 const { request, get } = require("http");
-const { query } = require("express");
+const { query, response } = require("express");
 const app = express();
 const PORT = process.env.PORT || 8080;
 // Sets up the Express app to handle data parsing
@@ -25,8 +25,8 @@ const connection = mysql2.createConnection({
 connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
-  // starter(); remember to un-hide this so the starter function launches first
-  addEmployee();
+  starter();
+  // updateRole();
 });
 
 function starter() {
@@ -59,6 +59,7 @@ function getDepartment() {
     starter();
   });
 }
+
 function getRoles() {
   const query =
     "select role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
@@ -68,6 +69,7 @@ function getRoles() {
     starter();
   });
 }
+
 function getEmployees() {
   const query = "SELECT * FROM employee";
   connection.query(query, (err, res) => {
@@ -84,6 +86,7 @@ function getEmployees() {
     starter();
   });
 }
+
 function addDepartment() {
   inquirer.prompt(questions.newDepartName).then((answers) => {
     connection.query(
@@ -135,6 +138,63 @@ function addEmployee() {
         }
       );
     }
+  });
+}
+
+function updateRole() {
+  var query = "SELECT * FROM employee";
+  let employees = [];
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+
+    for (var i = 0; i < res.length; i++) {
+      employees.push({
+        name: res[i].first_name + " " + res[i].last_name,
+        value: res[i].id,
+      });
+    }
+
+    let roles = [];
+    var query =
+      "select role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
+    connection.query(query, (err, res) => {
+      if (err) throw err;
+
+      for (var i = 0; i < res.length; i++) {
+        roles.push({
+          name: res[i].title,
+          value: res[i].id,
+        });
+      }
+    });
+    inquirer
+      .prompt([
+        {
+          type: "list",
+          name: "updateEmployee",
+          message: "Which employee would you like to update?",
+          choices: employees,
+        },
+        {
+          type: "list",
+          name: "updateRole",
+          message: "Which role would you like to assign?",
+          choices: roles,
+        },
+      ])
+      .then((answers) => {
+        console.log(answers);
+        var query = "UPDATE employee SET role_id = ? WHERE id = ?";
+        connection.query(
+          query,
+          [answers["UPDATE employee title"], answers["WHICH employee"]],
+          function (err, res) {
+            if (err) throw err;
+            console.log(res);
+            starter();
+          }
+        );
+      });
   });
 }
 
