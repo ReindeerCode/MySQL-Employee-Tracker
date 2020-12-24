@@ -26,7 +26,7 @@ connection.connect((err) => {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
   // starter(); remember to un-hide this so the starter function launches first
-  addRole();
+  addEmployee();
 });
 
 function starter() {
@@ -109,6 +109,32 @@ function addRole() {
         starter();
       }
     );
+  });
+}
+
+function addEmployee() {
+  inquirer.prompt(questions.newEmployeeInfo).then((answers) => {
+    if (answers.newEmployeeManager_ID !== "") {
+      connection.query(
+        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID}, ${answers.newEmployeeManager_ID});`,
+        function (err) {
+          if (err) throw err;
+          console.log(`Your new employee was created successfully!
+          -------------------------`);
+          starter();
+        }
+      );
+    } else {
+      connection.query(
+        `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID});`,
+        function (err) {
+          if (err) throw err;
+          console.log(`Your new employee was created successfully!
+          -------------------------`);
+          starter();
+        }
+      );
+    }
   });
 }
 
