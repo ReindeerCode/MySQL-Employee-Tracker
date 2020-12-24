@@ -142,12 +142,12 @@ function addEmployee() {
 }
 
 function updateRole() {
-  var query = "SELECT * FROM employee";
+  let query = "SELECT * FROM employee";
   let employees = [];
   connection.query(query, (err, res) => {
     if (err) throw err;
 
-    for (var i = 0; i < res.length; i++) {
+    for (let i = 0; i < res.length; i++) {
       employees.push({
         name: res[i].first_name + " " + res[i].last_name,
         value: res[i].id,
@@ -155,12 +155,11 @@ function updateRole() {
     }
 
     let roles = [];
-    var query =
-      "select role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
+    let query =
+      "select role.id, role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
     connection.query(query, (err, res) => {
       if (err) throw err;
-
-      for (var i = 0; i < res.length; i++) {
+      for (let i = 0; i < res.length; i++) {
         roles.push({
           name: res[i].title,
           value: res[i].id,
@@ -184,10 +183,18 @@ function updateRole() {
       ])
       .then((answers) => {
         console.log(answers);
-        var query = "UPDATE employee SET role_id = ? WHERE id = ?";
+        let query = "UPDATE employee SET ? WHERE ?";
         connection.query(
           query,
-          [answers["UPDATE employee title"], answers["WHICH employee"]],
+          [
+            {
+              role_id: answers.updateRole,
+            },
+            {
+              id: answers.updateEmployee,
+            },
+          ],
+
           function (err, res) {
             if (err) throw err;
             console.log(res);
