@@ -1,14 +1,14 @@
 const entryValidate = (answer) => {
   if (answer === "") {
-    return "Validate error message";
+    return "Cannot be blank.";
   }
   return true;
 };
 const numberValidate = (answer) => {
   if (isNaN(answer) === false) {
-    return "Must be a number.";
+    return true;
   }
-  return true;
+  return "Must be a number.";
 };
 
 const starterQ = [
