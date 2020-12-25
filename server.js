@@ -205,17 +205,17 @@ function updateRole() {
   });
 }
 
-function afterConnection() {
-  connection.query(
-    `select * from employee
-  inner join role on employee.role_id = role.id
-  inner join department on role.department_id = department.id;`,
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-    }
-  );
-}
+// function afterConnection() {
+//   connection.query(
+//     `select * from employee
+//   inner join role on employee.role_id = role.id
+//   inner join department on role.department_id = department.id;`,
+//     function (err, res) {
+//       if (err) throw err;
+//       console.table(res);
+//     }
+//   );
+// }
 
 // listen
 app.listen(PORT, function () {
