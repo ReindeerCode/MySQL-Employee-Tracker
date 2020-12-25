@@ -46,13 +46,14 @@ function starter() {
     } else if (answers.starterQuestion === "Update an employee's role.") {
       updateRole();
     } else {
+      console.log("Good work, ending app now.");
       connection.end();
     }
   });
 }
 
 function getDepartment() {
-  const query = "SELECT name FROM department";
+  const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
     console.table(res);
@@ -61,8 +62,7 @@ function getDepartment() {
 }
 
 function getRoles() {
-  const query =
-    "select role.title, role.salary, department.name from role inner JOIN department on role.department_id = department.id";
+  const query = "select * from role";
   connection.query(query, (err, res) => {
     if (err) throw err;
     console.table(res);
