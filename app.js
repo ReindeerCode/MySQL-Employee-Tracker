@@ -1,19 +1,11 @@
 // Dependencies
-const express = require("express");
 const inquirer = require("inquirer");
 const path = require("path");
 const cTable = require("console.table");
 const fs = require("fs");
 const mysql2 = require("mysql2");
 const questions = require("./questions");
-const { request, get } = require("http");
-const { query, response } = require("express");
-const app = express();
 const PORT = process.env.PORT || 8080;
-// Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static("public"));
 
 const connection = mysql2.createConnection({
   host: "localhost",
@@ -47,24 +39,32 @@ function starter() {
       updateRole();
     } else {
       console.log("Good work, ending app now.");
-      connection.end();
+      afterConnection();
     }
   });
 }
 
-function getDepartment() {
+function getDepartment(cb) {
   const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
+    if (cb !== null) {
+      cb(res);
+      return;
+    }
     console.table(res);
     starter();
   });
 }
 
-function getRoles() {
+function getRoles(cb) {
   const query = "select * from role";
   connection.query(query, (err, res) => {
     if (err) throw err;
+    if (cb !== null) {
+      cb(res);
+      return;
+    }
     console.table(res);
     starter();
   });
@@ -73,14 +73,13 @@ function getRoles() {
 function getEmployees() {
   const query = "SELECT * FROM employee";
   connection.query(query, (err, res) => {
-    let table = [];
-    res.forEach((employee) => {
-      table.push({
-        ID: `${employee.id}`,
+    let table = res.map((employee) => {
+      return {
+        ID: employee.id,
         NAME: `${employee.first_name} ${employee.last_name}`,
-        ROLE_ID: `${employee.role_id}`,
-        MANAGER_ID: `${employee.manager_id}`,
-      });
+        ROLE_ID: employee.role_id,
+        MANAGER_ID: employee.manager_id,
+      };
     });
     console.table(table);
     starter();
@@ -102,16 +101,21 @@ function addDepartment() {
 }
 
 function addRole() {
-  inquirer.prompt(questions.newRoleInfo).then((answers) => {
-    connection.query(
-      `INSERT INTO role (title, salary, department_id) VALUES ("${answers.newRoleTitle}", ${answers.newRoleSalary}, ${answers.newRoleDepartment_ID});`,
-      function (err) {
-        if (err) throw err;
-        console.log(`Your new role was created successfully!
-        -------------------------`);
-        starter();
-      }
-    );
+  getDepartment((res) => {
+    let names = res.map((name) => {
+      return { value: name.id, name: name.name };
+    });
+    inquirer.prompt(questions.newRoleInfo(names)).then((answers) => {
+      connection.query(
+        `INSERT INTO role (title, salary, department_id) VALUES ("${answers.newRoleTitle}", ${answers.newRoleSalary}, ${answers.newRoleDepartment_ID});`,
+        function (err) {
+          if (err) throw err;
+          console.log(`Your new role was created successfully!
+          -------------------------`);
+          starter();
+        }
+      );
+    });
   });
 }
 
@@ -205,20 +209,14 @@ function updateRole() {
   });
 }
 
-// function afterConnection() {
-//   connection.query(
-//     `select * from employee
-//   inner join role on employee.role_id = role.id
-//   inner join department on role.department_id = department.id;`,
-//     function (err, res) {
-//       if (err) throw err;
-//       console.table(res);
-//     }
-//   );
-// }
-
-// listen
-app.listen(PORT, function () {
-  console.log("App listening on PORT " + PORT);
-});
-// end listen
+function afterConnection() {
+  connection.query(
+    `select * from employee
+  left join role on employee.role_id = role.id;`,
+    function (err, res) {
+      if (err) throw err;
+      console.table(res);
+      connection.end();
+    }
+  );
+}

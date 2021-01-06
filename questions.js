@@ -51,7 +51,7 @@ const newDepartName = [
     validate: entryValidate,
   },
 ];
-const newRoleInfo = [
+const newRoleInfo = (roles) => [
   {
     type: "input",
     name: "newRoleTitle",
@@ -65,10 +65,10 @@ const newRoleInfo = [
     validate: numberValidate,
   },
   {
-    type: "input",
+    type: "list",
     name: "newRoleDepartment_ID",
     message: "What is the new role's Department ID number?",
-    validate: numberValidate,
+    choices: roles,
   },
 ];
 
