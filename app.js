@@ -48,10 +48,10 @@ function getDepartment(cb) {
   const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
-    if (cb !== null) {
-      cb(res);
-      return;
-    }
+    // if (cb !== null) {
+    //   cb(res);
+    //   return;
+    // }
     console.table(res);
     starter();
   });
@@ -61,10 +61,10 @@ function getRoles(cb) {
   const query = "select * from role";
   connection.query(query, (err, res) => {
     if (err) throw err;
-    if (cb !== null) {
-      cb(res);
-      return;
-    }
+    // if (cb !== null) {
+    //   cb(res);
+    //   return;
+    // }
     console.table(res);
     starter();
   });
@@ -92,9 +92,15 @@ function addDepartment() {
       `INSERT INTO department (name) VALUES ("${answers.newDepartName}");`,
       function (err) {
         if (err) throw err;
-        console.log(`Your department name was created successfully!
-        -------------------------`);
-        starter();
+        const query = "SELECT * FROM department";
+        connection.query(query, (err, res) => {
+          if (err) throw err;
+          console.log(`-------------------------
+          Your department name was created successfully!
+          -------------------------`);
+          console.table(res);
+          starter();
+        });
       }
     );
   });
@@ -110,8 +116,10 @@ function addRole() {
         `INSERT INTO role (title, salary, department_id) VALUES ("${answers.newRoleTitle}", ${answers.newRoleSalary}, ${answers.newRoleDepartment_ID});`,
         function (err) {
           if (err) throw err;
-          console.log(`Your new role was created successfully!
+          console.log(`-------------------------
+          Your new role was created successfully!
           -------------------------`);
+          console.table(res);
           starter();
         }
       );
