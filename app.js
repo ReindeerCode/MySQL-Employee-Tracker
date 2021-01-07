@@ -24,7 +24,7 @@ connection.connect((err) => {
 function starter() {
   inquirer.prompt(questions.starterQ).then((answers) => {
     if (answers.starterQuestion === "View departments.") {
-      getDepartment();
+      viewDepartment();
     } else if (answers.starterQuestion === "View Roles.") {
       getRoles();
     } else if (answers.starterQuestion === "View Employees.") {
@@ -44,16 +44,22 @@ function starter() {
   });
 }
 
-function getDepartment(cb) {
+async function viewDepartment() {
   const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
-    // if (cb !== null) {
-    //   cb(res);
-    //   return;
-    // }
+
     console.table(res);
     starter();
+  });
+}
+
+function getDepartment() {
+  const query = "SELECT * FROM department";
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.log(res);
+    return res;
   });
 }
 
@@ -95,9 +101,10 @@ function addDepartment() {
         const query = "SELECT * FROM department";
         connection.query(query, (err, res) => {
           if (err) throw err;
-          console.log(`-------------------------
+          console.log(`
+          ---------------------------------------------
           Your department name was created successfully!
-          -------------------------`);
+          ---------------------------------------------`);
           console.table(res);
           starter();
         });
@@ -106,50 +113,61 @@ function addDepartment() {
   });
 }
 
-function addRole() {
-  getDepartment((res) => {
-    let names = res.map((name) => {
-      return { value: name.id, name: name.name };
-    });
-    inquirer.prompt(questions.newRoleInfo(names)).then((answers) => {
-      connection.query(
-        `INSERT INTO role (title, salary, department_id) VALUES ("${answers.newRoleTitle}", ${answers.newRoleSalary}, ${answers.newRoleDepartment_ID});`,
-        function (err) {
-          if (err) throw err;
-          console.log(`-------------------------
+async function addRole() {
+  const departments = await getDepartment();
+  console.log(departments, "Departments");
+  let names = departments.map((department) => {
+    return { value: department.id, name: department.name };
+  });
+  inquirer.prompt(questions.newRoleInfo(names)).then((answers) => {
+    connection.query(
+      `INSERT INTO role (title, salary, department_id) VALUES ("${answers.newRoleTitle}", ${answers.newRoleSalary}, ${answers.newRoleDepartment_ID});`,
+      function (err) {
+        if (err) throw err;
+        console.log(`
+          ---------------------------------------
           Your new role was created successfully!
-          -------------------------`);
-          console.table(res);
-          starter();
-        }
-      );
-    });
+          ---------------------------------------`);
+        viewDepartment();
+      }
+    );
   });
 }
 
 function addEmployee() {
-  inquirer.prompt(questions.newEmployeeInfo).then((answers) => {
-    if (answers.newEmployeeManager_ID !== "") {
-      connection.query(
-        `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID}, ${answers.newEmployeeManager_ID});`,
-        function (err) {
-          if (err) throw err;
-          console.log(`Your new employee was created successfully!
-          -------------------------`);
-          starter();
-        }
-      );
-    } else {
-      connection.query(
-        `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID});`,
-        function (err) {
-          if (err) throw err;
-          console.log(`Your new employee was created successfully!
-          -------------------------`);
-          starter();
-        }
-      );
-    }
+  getRoles((res) => {
+    let roles = res.map((role) => {
+      return { value: role.id, name: role.title };
+    });
+    inquirer.prompt(questions.newEmployeeInfo(roles)).then((answers) => {
+      if (answers.newEmployeeManager_ID !== "") {
+        connection.query(
+          `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID}, ${answers.newEmployeeManager_ID});`,
+          function (err) {
+            if (err) throw err;
+            console.log(`
+            -------------------------------------------
+            Your new employee was created successfully!
+            -------------------------------------------`);
+            console.table(res);
+            starter();
+          }
+        );
+      } else {
+        connection.query(
+          `INSERT INTO employee (first_name, last_name, role_id) VALUES ("${answers.newFirstName}", "${answers.newLastName}", ${answers.newEmployeeID});`,
+          function (err) {
+            if (err) throw err;
+            console.log(`
+            -------------------------------------------
+            Your new employee was created successfully!
+            -------------------------------------------`);
+            console.table(res);
+            starter();
+          }
+        );
+      }
+    });
   });
 }
 

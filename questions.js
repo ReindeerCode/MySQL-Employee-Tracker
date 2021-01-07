@@ -72,7 +72,7 @@ const newRoleInfo = (roles) => [
   },
 ];
 
-const newEmployeeInfo = [
+const newEmployeeInfo = (roles) => [
   {
     type: "input",
     name: "newFirstName",
@@ -86,10 +86,10 @@ const newEmployeeInfo = [
     validate: entryValidate,
   },
   {
-    type: "input",
+    type: "list",
     name: "newEmployeeID",
-    message: "What is the new employee's id number?",
-    validate: numberValidate,
+    message: "What is the new employee's Role?",
+    choices: roles,
   },
   {
     type: "input",

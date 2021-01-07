@@ -1,3 +1,8 @@
+SELECT * FROM employee_trackerdb.role;
+SELECT * FROM employee_trackerdb.employee;
+SELECT * FROM employee_trackerdb.department;
+
+
 DROP DATABASE IF EXISTS employee_trackerDB;
 CREATE database employee_trackerDB;
 
