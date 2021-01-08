@@ -44,7 +44,7 @@ function starter() {
   });
 }
 
-async function viewDepartment() {
+function viewDepartment() {
   const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
@@ -54,7 +54,7 @@ async function viewDepartment() {
   });
 }
 
-function getDepartment() {
+async function getDepartment() {
   const query = "SELECT * FROM department";
   connection.query(query, (err, res) => {
     if (err) throw err;
