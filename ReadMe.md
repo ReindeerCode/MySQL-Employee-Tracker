@@ -1,18 +1,18 @@
 # Project: MySQL Employee Tracker
 
-  Deployable Link - > 
-
-  Video Walk through Link -> 
+  Video Walk through Link -> To come later.
 
 ## Table of Contents: 
-- [Name](#name)
-- [License](#license)
-- [Description](#description)
-- [Installation Instructions](#installationInstructions)
-- [Test](#test)
-- [GitHub](#gitHub)
-- [Email](#email)
-- [Contributors](#contributors)
+- [Project: MySQL Employee Tracker](#project-mysql-employee-tracker)
+  - [Table of Contents:](#table-of-contents)
+  - [License:](#license)
+  - [Description:](#description)
+  - [Images:](#images)
+  - [Installation Instructions:](#installation-instructions)
+  - [Test Command:](#test-command)
+  - [Github:](#github)
+  - [My Email Address:](#my-email-address)
+  - [Other Contributors:](#other-contributors)
 
 ## License:
 [![License:MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -21,11 +21,7 @@
 Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. In this project I architect and build a solution for managing a company's employees using node, inquirer, and MySQL.
 
 ## Images:
-![Project Screenshot](./imagePathHere.png)
-
-![Project Screenshot](./imagePathHere.png)
-
-![Project Screenshot](./imagePathHere.png)
+No images for this project.
 
 ## Installation Instructions: 
 1) npm i inquirer
